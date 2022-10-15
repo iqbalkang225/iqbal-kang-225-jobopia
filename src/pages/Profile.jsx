@@ -49,8 +49,8 @@ const Profile = () => {
                     })
                 }
                 <div>
-                    <Button className='px-10 mr-2'>Clear</Button>
-                    <Button className=' px-10' background color="white">Add</Button>
+                    <Button className='px-11 mr-2'>Clear</Button>
+                    <Button className=' px-11' background color="white">Add</Button>
                 </div>
             </form>
         </div>

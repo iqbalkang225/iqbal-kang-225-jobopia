@@ -10,7 +10,7 @@ const Home = () => {
     <main className='relative lg:grid grid-cols-10'>
 
       {/* Backdrop */}
-      <div className='hidden bg-black h-screen w-screen lg:hidden'></div>
+      <div className='absolute bg-black h-screen w-screen lg:hidden'></div>
 
       <Aside />
 

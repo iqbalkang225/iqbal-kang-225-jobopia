@@ -54,7 +54,7 @@ const Register = () => {
 
   onAuthStateChanged(auth, currentUser => {
     dispatch(loadUser(currentUser?.email))
-    if (user.user) navigate('/landing')
+    if (user.user) navigate('/')
   })
 
   return (
