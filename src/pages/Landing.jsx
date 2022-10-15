@@ -1,8 +1,24 @@
 import React from 'react'
 import svg from '../assets/image.svg'
 import { Logo } from '../components'
+import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router'
+import { auth, db } from '../firebase'
+import { signOut } from 'firebase/auth'
+import { doc, setDoc } from 'firebase/firestore'
 
 const Landing = () => {
+  const navigate = useNavigate()
+
+  const logOut = async () => {
+    await signOut(auth)
+    navigate('/landing')
+  }
+
+  const sendData = () => {
+    setDoc(doc(db, 'users', 'name'), {age: 12})
+  }
+
   return (
     <main>
       <div className=' w-screen md:grid grid-cols-2'>
@@ -19,9 +35,18 @@ const Landing = () => {
               accusantium sit amet consectetur adipisicing elit. Optio,
               veritatis quam libero.
             </p>
-            <button className='bg-gradient-to-r from-primary to-red py-2.5 px-5 rounded-lg capitalize hover:bg-gradient-to-l from-primary to-red'>
+            <Link
+              to='/register'
+              className='bg-gradient-to-r from-primary to-red py-2.5 px-5 rounded-lg capitalize hover:bg-gradient-to-l from-primary to-red'
+            >
               login / register
-            </button>
+            </Link>
+            {/* Delete this */}
+            <div>
+              <button onClick={logOut}>logout</button>
+              <input type="text"  />
+              <button onClick={sendData}>Send data</button>
+            </div>
           </div>
         </div>
 

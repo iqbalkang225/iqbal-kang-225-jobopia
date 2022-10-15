@@ -1,12 +1,17 @@
-import React, { useState } from 'react'
-import { Button, FormRow } from '../components'
+import React, { useEffect, useState } from 'react'
+import { Button, FormRow, Logo } from '../components'
 import { inputs } from '../data/register-inputs'
 import logo2 from '../assets/logo2.png'
 import { toast } from 'react-toastify'
 import { useSelector, useDispatch } from 'react-redux'
-import { loginUser, registerUser } from '../features/user/userSlice'
+import { loadUser, loginUser, registerUser } from '../features/user/userSlice'
+import { useNavigate } from 'react-router'
+import { auth } from '../firebase'
+import { onAuthStateChanged } from 'firebase/auth'
 
 const Register = () => {
+  const navigate = useNavigate()
+
   const initialValues = {
     name: '',
     email: '',
@@ -16,7 +21,8 @@ const Register = () => {
 
   const [values, setValues] = useState(initialValues)
 
-  // const trying = useSelector(store => store.user)
+  const user = useSelector(store => store.user)
+  console.log(user)
 
   const dispatch = useDispatch()
 
@@ -46,12 +52,18 @@ const Register = () => {
       : dispatch(registerUser({ email, password }))
   }
 
+  onAuthStateChanged(auth, currentUser => {
+    dispatch(loadUser(currentUser?.email))
+    if (user.user) navigate('/landing')
+  })
+
   return (
     // outer container
     <div className='bg-black w-screen h-screen flex justify-center items-center'>
       {/* container */}
       <div className='w-96 bg-white p-10 rounded-xl'>
-        <img src={logo2} alt='logo' className='h-16 mx-auto' />
+        {/* <img src={logo2} alt='logo' className='h-16 mx-auto' /> */}
+        <Logo color='black' className='mx-auto' />
         <h3 className='text-3xl mt-7 mb-4'>
           {values.isMember ? 'Login' : 'Register'}
         </h3>

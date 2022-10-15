@@ -1,8 +1,15 @@
 import React from 'react'
-import logo from '../assets/logo.png'
+import logoWhite from '../assets/logo-white.png'
+import logoBlack from '../assets/logo-black.png'
 
-const Logo = () => {
-  return <img className='p-8 xl:px-32 h-32' src={logo} alt='logo' />
+const Logo = ({ className, color }) => {
+  return (
+    <img
+      className={`h-16 ${className}`}
+      src={color ? logoBlack : logoWhite}
+      alt='logo'
+    />
+  )
 }
 
 export default Logo
