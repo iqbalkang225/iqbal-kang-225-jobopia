@@ -2,22 +2,13 @@ import React from 'react'
 import svg from '../assets/image.svg'
 import { Logo } from '../components'
 import { Link } from 'react-router-dom'
-import { useNavigate } from 'react-router'
-import { auth, db } from '../firebase'
-import { signOut } from 'firebase/auth'
-import { doc, setDoc } from 'firebase/firestore'
 
 const Landing = () => {
-  const navigate = useNavigate()
 
-  const logOut = async () => {
-    await signOut(auth)
-    navigate('/landing')
-  }
+  // const sendData = () => {
+  //   setDoc(doc(db, 'users', 'name'), {age: 12})
+  // }
 
-  const sendData = () => {
-    setDoc(doc(db, 'users', 'name'), {age: 12})
-  }
 
   return (
     <main>
@@ -43,9 +34,8 @@ const Landing = () => {
             </Link>
             {/* Delete this */}
             <div>
-              <button onClick={logOut}>logout</button>
               <input type="text"  />
-              <button onClick={sendData}>Send data</button>
+              {/* <button onClick={sendData}>Send data</button> */}
             </div>
           </div>
         </div>

@@ -7,6 +7,7 @@ import store from './store/store'
 import SearchJobs from './pages/SearchJobs'
 
 function App() {
+
   return (
     <Provider store={store}>
       <Routes>

@@ -1,8 +1,31 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Card } from '../components'
 import { IoIosStats, IoIosAddCircleOutline, IoIosSearch  } from 'react-icons/io'
 
+import { fetchUserData } from '../features/user/userSlice'
+import { db } from '../firebase'
+import { collection, doc, onSnapshot } from 'firebase/firestore'
+import { useDispatch, useSelector } from 'react-redux'
+
 const Dashboard = () => {
+   
+
+    const dispatch = useDispatch()
+    const { currentUser } = useSelector(store => store.user)
+    console.log(currentUser)
+
+    // //change
+    useEffect(() => {
+        const userRef = collection(db, 'users')
+        onSnapshot(doc(userRef, currentUser.email), (snapshot) => {
+            dispatch(fetchUserData(snapshot.data()))
+        })
+    }, [])
+
+    const getStatusCount = (jobStatus) => currentUser?.jobs?.filter((job) => job.status === jobStatus).length
+
+    const calcPercentage = () => {}
+
   return (
     <div className='grid sm:grid-cols-2 gap-6 md:grid-cols-3'>
         <Card className='flex flex-col'>
@@ -13,7 +36,7 @@ const Dashboard = () => {
             <div className='p-4 flex flex-col'>
                 <p className='font-bold text-2xl'>Pending</p>
                 <p className='mb-5 text-4xl font-extralight'>Applications</p>
-                <h2 className='text-7xl self-center text-blue md:text-5xl lg:text-7xl'>14</h2>
+                <h2 className='text-7xl self-center text-blue md:text-5xl lg:text-7xl'> {getStatusCount('pending') || 0} </h2>
             </div>
         </Card>
         
@@ -25,7 +48,7 @@ const Dashboard = () => {
             <div className='p-4 flex flex-col'>
                 <p className='font-bold text-2xl'>Interviews</p>
                 <p className='mb-5 text-4xl font-extralight'>Scheduled</p>
-                <h2 className='text-7xl self-center text-magenta md:text-5xl lg:text-7xl'>14</h2>
+                <h2 className='text-7xl self-center text-magenta md:text-5xl lg:text-7xl'> {getStatusCount('interview')} </h2>
             </div>
         </Card>
 
@@ -37,7 +60,7 @@ const Dashboard = () => {
             <div className='p-4 flex flex-col'>
                 <p className='font-bold text-2xl'>Jobs</p>
                 <p className='mb-5 text-4xl font-extralight'>Declined</p>
-                <h2 className='text-7xl self-center text-red md:text-5xl lg:text-7xl'>14</h2>
+                <h2 className='text-7xl self-center text-red md:text-5xl lg:text-7xl'> {getStatusCount('declined')} </h2>
             </div>
         </Card>
 

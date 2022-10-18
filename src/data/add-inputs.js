@@ -11,7 +11,7 @@ export const inputs = [
       message: 'Please enter a valid Email',
     },
     {
-      label: 'job location',
+      label: 'location',
       type: 'text',
       required: true,
       message: 'Please enter a password',
@@ -21,13 +21,13 @@ export const inputs = [
       type: 'select',
       required: true,
       message: 'Please enter a password',
-      options: ['pending', 'interview', ['declined']]
+      options: ['--Choose an option--', 'pending', 'interview', ['declined']]
     },
     {
-      label: 'job type',
+      label: 'type',
       type: 'select',
       required: true,
       message: 'Please enter a password',
-      options: ['full-time', 'part-time', 'internship', 'remote']
+      options: ['--Choose an option--', 'full-time', 'part-time', 'internship', 'remote']
     },
   ]
