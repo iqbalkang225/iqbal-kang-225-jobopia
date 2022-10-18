@@ -2,8 +2,9 @@ import { fetchUserData } from "./userSlice"
 
 import { auth, db } from '../../firebase'
 import { getNotification } from '../../utils/utilFunctions'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth'
 import { collection, addDoc, doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore'
+import { loadUser } from './userSlice'
 
 
 export const authUser = (user, authType) => {
@@ -26,6 +27,11 @@ export const authUser = (user, authType) => {
 
         onSnapshot(doc(userRef, userEmail), (snapshot) => {
             dispatch(fetchUserData(snapshot.data()))
+        })
+        console.log('rendered')
+
+        onAuthStateChanged(auth, loggedInUser => {
+          dispatch(loadUser(loggedInUser.email))
         })
         
       } catch (err) {

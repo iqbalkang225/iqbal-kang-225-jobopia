@@ -28,6 +28,8 @@ const Register = () => {
   const { currentUser } = useSelector(store => store.user)
   const dispatch = useDispatch()
 
+  const { anyUser } = useSelector(store => store.user)
+
   const handleSubmit = e => {
     e.preventDefault()
 
@@ -36,12 +38,14 @@ const Register = () => {
     isMember
       ? dispatch(authUser({ email, password }, signInWithEmailAndPassword))
       : dispatch(authUser({ name, email, password }, createUserWithEmailAndPassword))
+
+    if(anyUser) navigate('/')
   }
 
-  onAuthStateChanged(auth, loggedInUser => {
-    console.log(loggedInUser)
-    if (currentUser.email) navigate('/')
-  })
+  // onAuthStateChanged(auth, loggedInUser => {
+  //   console.log(loggedInUser)
+  //   if (currentUser.email) navigate('/')
+  // })
 
   return (
     // outer container

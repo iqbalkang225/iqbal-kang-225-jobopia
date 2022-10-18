@@ -4,7 +4,7 @@ import { getNotification } from '../../utils/utilFunctions'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import { collection, addDoc, doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore'
 
-const initialState = { currentUser: {}, isLoading: false }
+const initialState = { currentUser: {}, anyUser: '', isLoading: false }
 
 const userSlice = createSlice(
   {
@@ -13,9 +13,7 @@ const userSlice = createSlice(
     reducers: {
       
       loadUser(state, action) {
-        state.currentUser.loggedIn = action.payload
-        // state.currentUser.email = action.payload.email
-        // state.currentUser.name = action.payload.name
+        state.anyUser = action.payload
       },
 
       fetchUserData(state,action) {

@@ -32,11 +32,6 @@ const Landing = () => {
             >
               login / register
             </Link>
-            {/* Delete this */}
-            <div>
-              <input type="text"  />
-              {/* <button onClick={sendData}>Send data</button> */}
-            </div>
           </div>
         </div>
 

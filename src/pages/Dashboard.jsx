@@ -12,9 +12,10 @@ const Dashboard = () => {
 
     const dispatch = useDispatch()
     const { currentUser } = useSelector(store => store.user)
-    console.log(currentUser)
+    // const currentUser = useSelector(store => store.user)
+    // console.log(currentUser)
 
-    // //change
+    // // //change
     useEffect(() => {
         const userRef = collection(db, 'users')
         onSnapshot(doc(userRef, currentUser.email), (snapshot) => {
@@ -25,6 +26,8 @@ const Dashboard = () => {
     const getStatusCount = (jobStatus) => currentUser?.jobs?.filter((job) => job.status === jobStatus).length
 
     const calcPercentage = () => {}
+
+    // const getStatusCount = () => {}
 
   return (
     <div className='grid sm:grid-cols-2 gap-6 md:grid-cols-3'>
