@@ -16,4 +16,10 @@ export const inputs = [
     required: true,
     message: 'Please enter a password',
   },
+  {
+    label: 'confirmPassword',
+    type: 'password',
+    required: true,
+    message: 'Please enter a password',
+  },
 ]

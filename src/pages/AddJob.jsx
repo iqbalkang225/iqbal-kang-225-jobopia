@@ -1,9 +1,7 @@
-import { collection, getDocs, addDoc, doc, updateDoc, arrayUnion } from 'firebase/firestore'
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Button, FormRow } from '../components'
 import { inputs } from '../data/add-inputs'
-import { db } from '../firebase'
 
 
 
@@ -27,11 +25,6 @@ const AddJob = () => {
     }
 
     const sendData = async () => {
-        const userRef = collection(db, 'users')
-        const docRef = doc(userRef, currentUser.email)
-        await updateDoc(docRef, {
-            jobs: arrayUnion( {...values} )
-        })
     }
 
     const handleSubmit = e => {

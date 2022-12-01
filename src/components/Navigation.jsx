@@ -5,8 +5,6 @@ import { IoChevronDown } from 'react-icons/io5'
 import { Button } from '../components'
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleAside, toggleLogout } from '../features/ui/uiSlice'
-import { signOut } from 'firebase/auth'
-import { auth } from '../firebase'
 import { useNavigate } from 'react-router'
 import { current } from '@reduxjs/toolkit'
 
@@ -14,14 +12,13 @@ const Navigation = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { currentPage, isLogoutOpen } = useSelector(store => store.ui)
-  const { name } = useSelector(store => store.user.currentUser)
+  // const { name } = useSelector(store => store.user.currentUser)
 
   const toggleAsideHandler = () => dispatch( toggleAside() ) 
 
   const toggleLogoutHandler = () => dispatch( toggleLogout() )
 
   const logOut = async () => {
-    await signOut(auth)
     navigate('/landing')
   }
 
@@ -45,7 +42,8 @@ const Navigation = () => {
             onClick = {toggleLogoutHandler}
             className="flex items-center py-1 px-3 lg:py-2 lg:px-4" background color="white">
             <AiOutlineUser className='mr-1' />
-            { name }
+            {/* { name } */}
+            sdsds
             <IoChevronDown className='ml-1' />
           </Button>
           {

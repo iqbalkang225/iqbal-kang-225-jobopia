@@ -3,8 +3,6 @@ import { Card } from '../components'
 import { IoIosStats, IoIosAddCircleOutline, IoIosSearch  } from 'react-icons/io'
 
 import { fetchUserData } from '../features/user/userSlice'
-import { db } from '../firebase'
-import { collection, doc, onSnapshot } from 'firebase/firestore'
 import { useDispatch, useSelector } from 'react-redux'
 
 const Dashboard = () => {
@@ -13,21 +11,11 @@ const Dashboard = () => {
     const dispatch = useDispatch()
     const { currentUser } = useSelector(store => store.user)
     // const currentUser = useSelector(store => store.user)
-    // console.log(currentUser)
 
-    // // //change
-    useEffect(() => {
-        const userRef = collection(db, 'users')
-        onSnapshot(doc(userRef, currentUser.email), (snapshot) => {
-            dispatch(fetchUserData(snapshot.data()))
-        })
-    }, [])
 
     const getStatusCount = (jobStatus) => currentUser?.jobs?.filter((job) => job.status === jobStatus).length
 
     const calcPercentage = () => {}
-
-    // const getStatusCount = () => {}
 
   return (
     <div className='grid sm:grid-cols-2 gap-6 md:grid-cols-3'>

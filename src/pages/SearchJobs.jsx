@@ -4,8 +4,6 @@ import { inputs } from '../data/add-inputs'
 import { IoIosStats, IoIosAddCircleOutline, IoIosSearch  } from 'react-icons/io'
 
 import { fetchUserData } from '../features/user/userSlice'
-import { db } from '../firebase'
-import { collection, doc, onSnapshot } from 'firebase/firestore'
 import { useDispatch, useSelector } from 'react-redux'
 
 
@@ -33,13 +31,6 @@ const SearchJobs = () => {
     //change
     const dispatch = useDispatch()
     const { currentUser } = useSelector(store => store.user)
-
-    useEffect(() => {
-        const userRef = collection(db, 'users')
-        onSnapshot(doc(userRef, currentUser.email), (snapshot) => {
-            dispatch(fetchUserData(snapshot.data()))
-        })
-    }, [])
 
   return (
     <div className='bg-white rounded-xl p-10'>

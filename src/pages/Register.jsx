@@ -4,21 +4,18 @@ import { inputs } from '../data/register-inputs'
 import { useSelector, useDispatch } from 'react-redux'
 import { loadUser } from '../features/user/userSlice'
 import { useNavigate } from 'react-router'
-import { onAuthStateChanged } from 'firebase/auth'
-import { auth } from '../firebase'
-import { authUser } from '../features/user/userThunks'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
+import { registerUser, loginUser } from '../features/user/userSlice'
 
 
 const Register = () => {
 
   const navigate = useNavigate()
 
-  const initialValues = { name: '', email: '', password: '', isMember: true }
+  const initialValues = { name: '', email: '', password: '', confirmPassword: '', isMember: true }
   const [values, setValues] = useState(initialValues)
 
   const toggleForm = () => setValues(prevState => (
-    { name: '', email: '', password: '', isMember: !prevState.isMember }))
+    { name: '', email: '', password: '', confirmPassword: '', isMember: !prevState.isMember }))
 
   const changeHandler = e => {
     const { name, value } = e.target
@@ -33,19 +30,15 @@ const Register = () => {
   const handleSubmit = e => {
     e.preventDefault()
 
-    const { name, email, password, isMember } = values
-    
+    const { name, email, password, confirmPassword, isMember } = values
+
     isMember
-      ? dispatch(authUser({ email, password }, signInWithEmailAndPassword))
-      : dispatch(authUser({ name, email, password }, createUserWithEmailAndPassword))
+      ? dispatch(loginUser({ email, password }))
+      : dispatch(registerUser({ name, email, password, confirmPassword }))
 
     if(anyUser) navigate('/')
   }
 
-  // onAuthStateChanged(auth, loggedInUser => {
-  //   console.log(loggedInUser)
-  //   if (currentUser.email) navigate('/')
-  // })
 
   return (
     // outer container
@@ -60,6 +53,7 @@ const Register = () => {
         <form className='flex flex-col gap-5' onSubmit={handleSubmit}>
           {inputs.map((input, index) => {
             if (values.isMember && index === 0) return null
+            if (values.isMember && index === 3) return null
             return (
               <FormRow
                 key={index}

@@ -3,14 +3,10 @@ import { inputs } from '../data/profile-inputs'
 import { Button, FormRow } from '../components'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { collection, addDoc, doc, getDoc, setDoc, onSnapshot, updateDoc } from 'firebase/firestore'
-import { db } from '../firebase'
-
 const Profile = () => {
 
     const dispatch = useDispatch()
     const { currentUser } = useSelector(store => store.user)
-    console.log(currentUser)
 
     const initialValues = {
         firstName: currentUser.name || '',
@@ -32,11 +28,6 @@ const Profile = () => {
     const handleSubmit = e => {
         e.preventDefault()
 
-        const userRef = collection(db, 'users')
-        updateDoc(doc(userRef, email), {
-            location: values.location,
-            lastName: values.lastName
-        })
     }
 
     return (

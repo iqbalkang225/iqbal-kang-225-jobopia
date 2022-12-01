@@ -5,13 +5,14 @@ import { Home, Error, Register, Landing, Dashboard, AddJob, Profile } from './pa
 import { Provider } from 'react-redux'
 import store from './store/store'
 import SearchJobs from './pages/SearchJobs'
+import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
 
   return (
     <Provider store={store}>
       <Routes>
-        <Route path='/' element={<Home />}>
+        <Route path='/' element={<ProtectedRoute> <Home /> </ProtectedRoute>}>
           <Route index element={ <Dashboard />} />
           <Route path='add' element={ <AddJob />} />
           <Route path='profile' element={ <Profile />} />

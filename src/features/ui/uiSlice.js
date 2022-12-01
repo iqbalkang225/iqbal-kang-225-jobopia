@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     currentPage: 'Dashboard',
-    isAsideOpen: true,
+    isAsideOpen: false,
     isLogoutOpen: false,
 }
 
