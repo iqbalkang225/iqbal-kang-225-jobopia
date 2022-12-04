@@ -5,7 +5,7 @@ import { Navigate } from 'react-router'
 const ProtectedRoute = ({ children }) => {
 
   const {user} = useSelector(store => store.user)
-  if(!user) return <Navigate to='/landing' />
+  if(!user) return <Navigate to='/register' />
 
   return children
 }

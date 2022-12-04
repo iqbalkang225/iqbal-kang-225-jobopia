@@ -3,17 +3,18 @@ export const inputs = [
       label: 'position',
       type: 'text',
       required: true,
+      message: 'Please enter the position',
     },
     {
       label: 'company',
       type: 'text',
       required: true,
-      message: 'Please enter a valid Email',
+      message: 'Please enter company name',
     },
     {
       label: 'location',
       type: 'text',
-      required: true,
+      // required: true,
       message: 'Please enter a password',
     },
     {
@@ -24,7 +25,7 @@ export const inputs = [
       options: ['--Choose an option--', 'pending', 'interview', ['declined']]
     },
     {
-      label: 'type',
+      label: 'jobType',
       type: 'select',
       required: true,
       message: 'Please enter a password',

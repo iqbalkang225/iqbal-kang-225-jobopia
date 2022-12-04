@@ -6,21 +6,20 @@ import { Button } from '../components'
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleAside, toggleLogout } from '../features/ui/uiSlice'
 import { useNavigate } from 'react-router'
-import { current } from '@reduxjs/toolkit'
+import { logoutUser } from '../features/user/userSlice'
 
 const Navigation = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { currentPage, isLogoutOpen } = useSelector(store => store.ui)
-  // const { name } = useSelector(store => store.user.currentUser)
+  const { user } = useSelector(store => store.user)
 
   const toggleAsideHandler = () => dispatch( toggleAside() ) 
 
   const toggleLogoutHandler = () => dispatch( toggleLogout() )
 
-  const logOut = async () => {
-    navigate('/landing')
-  }
+  const logOut = () => dispatch( logoutUser() )
+  
 
   return (
     <div className=' flex items-center justify-between text-white py-5 md:py-8 lg:py-10'>
@@ -42,8 +41,7 @@ const Navigation = () => {
             onClick = {toggleLogoutHandler}
             className="flex items-center py-1 px-3 lg:py-2 lg:px-4" background color="white">
             <AiOutlineUser className='mr-1' />
-            {/* { name } */}
-            sdsds
+            { user.name }
             <IoChevronDown className='ml-1' />
           </Button>
           {

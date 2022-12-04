@@ -2,17 +2,18 @@ import React, { useState } from 'react'
 import { inputs } from '../data/profile-inputs'
 import { Button, FormRow } from '../components'
 import { useDispatch, useSelector } from 'react-redux'
+import { updateUser } from '../features/user/userThunks'
 
 const Profile = () => {
 
     const dispatch = useDispatch()
-    const { currentUser } = useSelector(store => store.user)
+    const { user } = useSelector(store => store.user)
 
     const initialValues = {
-        firstName: currentUser.name || '',
-        lastName: currentUser.lastName || '',
-        location: currentUser.location || '',
-        email: currentUser.email || '',
+        name: user.name || '',
+        lastName: user.lastName || '',
+        location: user.location || '',
+        email: user.email || '',
     }
 
     const [values, setValues] = useState(initialValues)
@@ -20,14 +21,12 @@ const Profile = () => {
     const changeHandler = e => {
         const { name, value } = e.target
         setValues(prevState => ( {...prevState, [name]: value } ))
-        console.log(values)
     }
 
-    const { email } = useSelector(store => store.user.currentUser)
     
     const handleSubmit = e => {
         e.preventDefault()
-
+        dispatch(updateUser({...values}))
     }
 
     return (

@@ -4,18 +4,39 @@ import { IoIosStats, IoIosAddCircleOutline, IoIosSearch  } from 'react-icons/io'
 
 import { fetchUserData } from '../features/user/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { getJobs } from '../features/search/searchThunks'
 
 const Dashboard = () => {
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(getJobs())        
+    }, [])
    
 
-    const dispatch = useDispatch()
-    const { currentUser } = useSelector(store => store.user)
-    // const currentUser = useSelector(store => store.user)
+    const { jobs } = useSelector(store => store.search)
 
+    const getStatusCount = (jobStatus) => jobs.filter((job) => job.status === jobStatus).length
 
-    const getStatusCount = (jobStatus) => currentUser?.jobs?.filter((job) => job.status === jobStatus).length
+    const calcPercentage = (jobType) => {
+        const totalJobs = jobs.length
+        return Math.round((jobType / totalJobs) * 100)
+    }
 
-    const calcPercentage = () => {}
+    const pending =  getStatusCount('pending')
+    const interview =  getStatusCount('interview')
+    const declined =  getStatusCount('declined')
+
+    // const pendingPercentage = calcPercentage(pending)
+    // const interviewPercentage = calcPercentage(interview)
+    // const declinedPercentage = calcPercentage(declined)
+
+    const jobTypePercentages = [calcPercentage(pending), calcPercentage(interview), calcPercentage(declined)]
+    const sortedJobTypePercentages = jobTypePercentages.sort((a, b) => b - a)
+
+    const biggest = ''
+    const bigger = ''
+    const big = ''
 
   return (
     <div className='grid sm:grid-cols-2 gap-6 md:grid-cols-3'>
@@ -27,7 +48,7 @@ const Dashboard = () => {
             <div className='p-4 flex flex-col'>
                 <p className='font-bold text-2xl'>Pending</p>
                 <p className='mb-5 text-4xl font-extralight'>Applications</p>
-                <h2 className='text-7xl self-center text-blue md:text-5xl lg:text-7xl'> {getStatusCount('pending') || 0} </h2>
+                <h2 className='text-7xl self-center text-blue md:text-5xl lg:text-7xl'> { pending } </h2>
             </div>
         </Card>
         
@@ -39,7 +60,7 @@ const Dashboard = () => {
             <div className='p-4 flex flex-col'>
                 <p className='font-bold text-2xl'>Interviews</p>
                 <p className='mb-5 text-4xl font-extralight'>Scheduled</p>
-                <h2 className='text-7xl self-center text-magenta md:text-5xl lg:text-7xl'> {getStatusCount('interview')} </h2>
+                <h2 className='text-7xl self-center text-magenta md:text-5xl lg:text-7xl'> { interview } </h2>
             </div>
         </Card>
 
@@ -51,15 +72,19 @@ const Dashboard = () => {
             <div className='p-4 flex flex-col'>
                 <p className='font-bold text-2xl'>Jobs</p>
                 <p className='mb-5 text-4xl font-extralight'>Declined</p>
-                <h2 className='text-7xl self-center text-red md:text-5xl lg:text-7xl'> {getStatusCount('declined')} </h2>
+                <h2 className='text-7xl self-center text-red md:text-5xl lg:text-7xl'> { declined } </h2>
             </div>
         </Card>
 
-        <Card className='flex flex-col col-span-2 lg:col-span-1 w-full order-1'>
+        <Card className='flex flex-col col-span-3 h-[300px]'>
+            <h1>dsf</h1>
+        </Card>
+
+        {/* <Card className='flex flex-col col-span-2 lg:col-span-1 w-full order-1'>
             <div className='relative font-bold text-white text-xl flex justify-center h-[300px] pt-24 ml-10 lg:-ml-4'>
-                <div className='absolute bg-blue left-8 w-[200px] h-[200px] rounded-full flex items-center justify-center border'>70%</div>
-                <div className='absolute left-50 top-4 bg-magenta w-[130px] h-[130px] rounded-full flex items-center justify-center border-[1.6px] lg:left-[160px]'>20%</div>
-                <div className='absolute top-28 left-52 bg-red w-[100px] h-[100px] rounded-full flex items-center justify-center border-[1.6px] lg:left-48 lg:top-22'>10%</div>
+                <div className='absolute bg-blue left-8 w-[200px] h-[200px] rounded-full flex items-center justify-center border'> {sortedJobTypePercentages[0]}%</div>
+                <div className='absolute left-50 top-4 bg-magenta w-[130px] h-[130px] rounded-full flex items-center justify-center border-[1.6px] lg:left-[160px]'> {sortedJobTypePercentages[1]}%</div>
+                <div className='absolute top-28 left-52 bg-red w-[100px] h-[100px] rounded-full flex items-center justify-center border-[1.6px] lg:left-48 lg:top-22'> {sortedJobTypePercentages[2]}%</div>
             </div>
 
             <div className='text-black flex flex-col gap-1 pl-10 mt-10 mb-6'>
@@ -78,12 +103,11 @@ const Dashboard = () => {
                     <p>Declined</p>
                 </div>
             </div>
-        </Card>
+        </Card> */}
 
-        <Card className='h-[300px] flex flex-col md:h-full col-span-2'>
+        {/* <Card className='h-[300px] flex flex-col md:h-full col-span-2'>
             <h1>dsf</h1>
-          
-        </Card>
+        </Card> */}
 
     </div>
 

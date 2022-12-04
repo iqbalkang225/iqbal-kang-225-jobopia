@@ -1,33 +1,21 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { setLocalStorage } from '../../utils/localStorage'
-import { postRequest } from '../../utils/urls'
-import { getNotification } from '../../utils/utilFunctions'
+import { createSlice } from '@reduxjs/toolkit'
+import { getLocalStorage, removeLocalStorage, setLocalStorage } from '../../utils/localStorage'
+import { toast } from 'react-toastify'
+import { registerUser, loginUser, updateUser } from './userThunks'
 
-const initialState = { user: null, anyUser: '', isLoading: false }
+const initialState = { 
+  user: getLocalStorage(), 
+  anyUser: '', 
+  isLoading: false 
+}
 
-export const registerUser = createAsyncThunk('user/registerUser', async(user, thunkAPI) => {
-  try {
-
-    const response = await postRequest('user/register', user)
-    const data = await response.json()
-    return data
-    
-  } catch (error) {
-    console.log(error)
-  } 
-})
-
-export const loginUser = createAsyncThunk('user/loginUser', async(user, thunkAPI) => {
-  try {
-
-    const response = await postRequest('user/login', user)
-    const data = await response.json()
-    return data
-    
-  } catch (error) {
-    console.log(error)
-  } 
-})
+const setFulfilledState = (state, payload, message) => {
+  const { user } = payload.data
+  state.user = {...user}
+  setLocalStorage({...user})
+  toast.success(message ? `${message} ${user.name}` : 'User updated')
+  state.isLoading = false
+}
 
 const userSlice = createSlice(
   {
@@ -36,44 +24,55 @@ const userSlice = createSlice(
     reducers: {
 
       loadUser(state, action) {
-        state.anyUser = action.payload
+        // state.anyUser = action.payload
       },
 
       fetchUserData(state,action) {
         state.user = action.payload
+      },
+
+      logoutUser(state, action) {
+        state.user = null
+        removeLocalStorage()
       }
   },
   extraReducers: (builder) => {
     builder
+      // Register User
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true
       })
-      .addCase(registerUser.fulfilled, (state, payload) => {
-        state.isLoading = false
-        setLocalStorage(payload.data)
-        state.user = 'payload'
+      .addCase(registerUser.fulfilled, (state, { payload }) => {
+        setFulfilledState(state, payload, 'Hello there')
       })
-      .addCase(registerUser.rejected, (state) => {
+      .addCase(registerUser.rejected, (state, { payload }) => {
         state.isLoading = false
-        console.log('oh no')
+        toast.error(payload)
       })
-
+      // Login User
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true
       })
       .addCase(loginUser.fulfilled, (state, { payload} ) => {
-        const { data } = payload 
-        console.log(payload)
-        state.user = data
-        setLocalStorage(data)
+        setFulfilledState(state, payload, 'Welcome back')
+      })
+      .addCase(loginUser.rejected, (state, { payload } ) => {
+        toast.error(payload)
         state.isLoading = false
       })
-      .addCase(loginUser.rejected, (state) => {
+      // Update User
+      .addCase(updateUser.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(updateUser.fulfilled, (state, { payload }) => {
+        setFulfilledState(state, payload)
+      })
+      .addCase(updateUser.rejected, (state, { payload } ) => {
+        toast.error(payload)
         state.isLoading = false
-        console.log('oh no')
       })
   }
 })
 
-export const { loadUser, fetchUserData } = userSlice.actions
+export const { loadUser, fetchUserData, logoutUser } = userSlice.actions
 export default userSlice.reducer

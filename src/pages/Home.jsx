@@ -21,7 +21,7 @@ const Home = () => {
 
       <Aside />
 
-      <div className={`h-screen px-5 lg:col-span-8 bg-black md:px-16 lg:px-24 overflow-scroll ${!isAsideOpen && 'lg:col-span-10'}`}>
+      <div className={`h-screen flex flex-col px-5 lg:col-span-8 bg-black md:px-16 lg:px-24 overflow-scroll ${!isAsideOpen && 'lg:col-span-10'}`}>
         <Navigation/>
         <Outlet/>
       </div>
