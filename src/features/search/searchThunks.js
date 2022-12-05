@@ -1,10 +1,18 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { postRequest, URL } from "../../utils/urls";
 
-export const getJobs = createAsyncThunk('search/getJobs', async(search, thunkAPI) => {
+export const getJobs = createAsyncThunk('search/getJobs', async(query, thunkAPI) => {
+
+  const { status, jobType, search } = query
+
+  let requestURL = `${URL}jobs?status=${status}&jobType=${jobType}`
+
+  if(search) {
+    requestURL = `${requestURL}&search=${search}`
+  }
 
   try {
-    const response = await fetch(`${URL}jobs`, {
+    const response = await fetch(requestURL, {
       headers: {
         authorization: `Bearer ${thunkAPI.getState().user.user.token}`
       }

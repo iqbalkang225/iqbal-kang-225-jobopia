@@ -22,13 +22,13 @@ export const inputs = [
       type: 'select',
       required: true,
       message: 'Please enter a password',
-      options: ['--Choose an option--', 'pending', 'interview', ['declined']]
+      options: ['pending', 'interview', 'declined']
     },
     {
       label: 'jobType',
       type: 'select',
       required: true,
       message: 'Please enter a password',
-      options: ['--Choose an option--', 'full-time', 'part-time', 'internship', 'remote']
+      options: ['full-time', 'part-time', 'internship', 'remote']
     },
   ]

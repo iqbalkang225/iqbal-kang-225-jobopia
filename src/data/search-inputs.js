@@ -5,15 +5,17 @@ export const inputs = [
   },
   {
     label: 'status',
-    type: 'text',
+    type: 'select',
+    options: ['all', 'pending', 'interview', 'declined']
   },
   {
-    label: 'type',
-    type: 'text',
+    label: 'jobType',
+    type: 'select',
+    options: ['all', 'full-time', 'part-time', 'internship', 'remote']
   },
   {
     label: 'sort',
     type: 'select',
-    options: ['--Choose an option--', 'latest', 'oldest', 'a-z', 'z-a']
+    options: ['latest', 'oldest', 'a-z', 'z-a']
   }
 ]

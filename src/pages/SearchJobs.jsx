@@ -13,13 +13,13 @@ import { editJob } from '../features/job/jobSlice'
 const SearchJobs = () => {
 
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const initialValues = {
-        position: '',
-        company: '',
-        location: '',
-        status: '',
-        type: '',
+        search: '',
+        status: 'all',
+        jobType: 'all',
+        sort: 'latest'
     }
 
     const [values, setValues] = useState(initialValues)
@@ -29,20 +29,22 @@ const SearchJobs = () => {
         setValues(prevState => ( {...prevState, [name]: value } ))
     }
 
-    const handleSubmit = e => {
+    const clearValues = e => {
         e.preventDefault()
+        setValues(initialValues)
     }
 
-    //change
-    const dispatch = useDispatch()
     const { jobs } = useSelector(store => store.search)
-    // const { location } = useSelector(store => store.user.user)
 
     useEffect(() => {
-        dispatch(getJobs())
-    }, [])
+        dispatch(getJobs(values))
+    }, [values])
 
-    const deleteHandler = (jobID) => dispatch(deleteJob(jobID))
+    const deleteHandler = (jobID) => {
+        dispatch(deleteJob(jobID))
+        dispatch(getJobs(values))
+    }
+
     const editHandler = (job) => {
         dispatch(editJob(job))
         navigate('/add')
@@ -67,8 +69,7 @@ const SearchJobs = () => {
                 })
             }
             <div>
-                {/* <Button className='px-10 mr-2'>Clear</Button> */}
-                <Button className=' px-10 py-[6px] w-full' background color="white">Clear Filters</Button>
+                <Button className=' px-10 py-[6px] w-full' type="button" background color="white" onClick={clearValues}>Clear Filters</Button>
             </div>
             </form>
         </div>

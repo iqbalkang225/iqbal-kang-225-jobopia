@@ -1,16 +1,24 @@
 import React, { useEffect } from 'react'
 import { Card } from '../components'
-import { IoIosStats, IoIosAddCircleOutline, IoIosSearch  } from 'react-icons/io'
+import { IoIosTimer } from 'react-icons/io'
+import { FiBell } from 'react-icons/fi'
+import { MdOutlineCancel } from 'react-icons/md'
 
-import { fetchUserData } from '../features/user/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { getJobs } from '../features/search/searchThunks'
 
 const Dashboard = () => {
     const dispatch = useDispatch()
 
+    const values = {
+        search: '',
+        sort: 'latest',
+        jobType: 'all',
+        status: 'all'
+    }
+
     useEffect(() => {
-        dispatch(getJobs())        
+        dispatch(getJobs(values))        
     }, [])
    
 
@@ -27,22 +35,12 @@ const Dashboard = () => {
     const interview =  getStatusCount('interview')
     const declined =  getStatusCount('declined')
 
-    // const pendingPercentage = calcPercentage(pending)
-    // const interviewPercentage = calcPercentage(interview)
-    // const declinedPercentage = calcPercentage(declined)
-
-    const jobTypePercentages = [calcPercentage(pending), calcPercentage(interview), calcPercentage(declined)]
-    const sortedJobTypePercentages = jobTypePercentages.sort((a, b) => b - a)
-
-    const biggest = ''
-    const bigger = ''
-    const big = ''
 
   return (
     <div className='grid sm:grid-cols-2 gap-6 md:grid-cols-3'>
         <Card className='flex flex-col'>
             <div className='p-4 pb-1 px-4 self-end'>
-                <IoIosAddCircleOutline className= 'h-[40px] w-[40px] lg:h-[36px] lg:w-[36px]' />
+                <IoIosTimer className= 'h-[40px] w-[40px] lg:h-[36px] lg:w-[36px]' />
             </div>
             <div className='w-full h-0.5 bg-blue'></div>
             <div className='p-4 flex flex-col'>
@@ -54,7 +52,7 @@ const Dashboard = () => {
         
         <Card className='flex flex-col'>
             <div className='p-4 pb-1 px-4 self-end'>
-                <IoIosAddCircleOutline className= 'h-[40px] w-[40px] lg:h-[36px] lg:w-[36px]' />
+                <FiBell className= 'h-[40px] w-[40px] lg:h-[36px] lg:w-[36px]' />
             </div>
             <div className='w-full h-0.5 bg-magenta'></div>
             <div className='p-4 flex flex-col'>
@@ -66,7 +64,7 @@ const Dashboard = () => {
 
         <Card className='flex flex-col'>
             <div className='p-4 pb-1 px-4 self-end'>
-                <IoIosAddCircleOutline className= 'h-[40px] w-[40px] lg:h-[36px] lg:w-[36px]' />
+                <MdOutlineCancel className= 'h-[40px] w-[40px] lg:h-[36px] lg:w-[36px]' />
             </div>
             <div className='w-full h-0.5 bg-red'></div>
             <div className='p-4 flex flex-col'>

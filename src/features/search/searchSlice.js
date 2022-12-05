@@ -4,8 +4,9 @@ import { getJobs, deleteJob } from "./searchThunks";
 
 const initialState = {
   jobs: [],
-  isLoading: false
+  isLoading: false,
 }
+
 const searchSlice = createSlice({
   name: 'search',
   initialState,

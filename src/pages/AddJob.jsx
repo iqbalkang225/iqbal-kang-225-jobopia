@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { Button, FormRow } from '../components'
 import { inputs } from '../data/add-inputs'
 import { addJob, postEditJob } from '../features/job/jobSlice'
@@ -9,6 +10,7 @@ import { addJob, postEditJob } from '../features/job/jobSlice'
 const AddJob = () => {
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const { user } = useSelector(store => store.user)
     const job = useSelector(store => store.job)
@@ -18,8 +20,8 @@ const AddJob = () => {
         position: isEditing ? position : '',
         company: isEditing ? company : '',
         location: user.location || '',
-        status: isEditing ? status : '',
-        jobType: isEditing ? jobType : '',
+        status: isEditing ? status : 'pending',
+        jobType: isEditing ? jobType : 'full-time',
     }
 
     const [values, setValues] = useState(initialValues)
@@ -29,9 +31,6 @@ const AddJob = () => {
         setValues(prevState => ( {...prevState, [name]: value } ))
     }
 
-    const sendData = async () => {
-    }
-
     const handleSubmit = e => {
         e.preventDefault()
 
@@ -39,10 +38,12 @@ const AddJob = () => {
             dispatch(postEditJob({ ...values, _id }))
             return
         }
-
         dispatch(addJob( {...values} ))
-        setValues(initialValues)
+        // setValues(initialValues)
+        navigate('/search')
     }
+
+    const clearValues = () => setValues(initialValues)
 
     return (
         <div className='bg-white rounded-xl flex justify-center py-10'>
@@ -55,14 +56,12 @@ const AddJob = () => {
                                     direction='row'
                                     onChange={changeHandler}
                                     value={values[input.label]}
-                                    // focus={focus}
-                                    // handleFocus={handleFocus}
                                     {...input}
                                 />
                     })
                 }
                 <div>
-                    <Button className='px-11 mr-2'>Clear</Button>
+                    <Button className='px-11 mr-2' type='button' onClick={clearValues}>Clear</Button>
                     <Button className=' px-11' background color="white">Add</Button>
                 </div>
             </form>

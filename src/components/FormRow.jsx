@@ -8,7 +8,7 @@ const FormRow = ({ text, label, type, onChange,  value, disabled, direction, req
     return (
       <div className={`flex ${`flex-${direction} ${direction === 'row' && 'gap-6 items-center'}`}`}>
 
-        <label htmlFor={label} className='capitalize mb-1.5'>
+        <label htmlFor={label} className={`capitalize mb-1.5 text-${color}`}>
           {label}
         </label>
 
