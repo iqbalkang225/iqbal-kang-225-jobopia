@@ -1,10 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { postRequest } from '../../utils/urls'
+import { postRequest, URL } from '../../utils/urls'
 
 const initialState = {
   isLoading: false,
-  isEditing: false
+  isEditing: false,
+  stats: {}
 }
 
 export const addJob = createAsyncThunk('job/addJob', async(job, thunkAPI) => {
@@ -35,6 +36,24 @@ export const postEditJob = createAsyncThunk('job/editJob', async(job, thunkAPI) 
   }
   catch(error) {
     return thunkAPI.rejectWithValue(error.message)
+  }
+
+})
+
+export const getStats = createAsyncThunk('job/getStats', async(_, thunkAPI) => {
+  
+  try {
+    const response = await fetch(`${URL}jobs/stats`, {
+      headers: {
+        authorization: `Bearer ${thunkAPI.getState().user.user.token}`
+      }
+    })
+    const data = await response.json()
+    return data
+    
+  } 
+  catch (error) {
+    return thunkAPI.rejectWithValue(error.message)  
   }
 
 })
@@ -71,6 +90,18 @@ const jobSlice = createSlice({
         toast.success('Job updated')
       })
       .addCase(postEditJob.rejected, ( state, { payload }) => {
+        state.isLoading = false
+      })
+
+      // Get Stats
+      .addCase(getStats.pending, ( state, { payload } ) => {
+        state.isLoading = true
+      })
+      .addCase(getStats.fulfilled, ( state, { payload } ) => {
+        state.isLoading = false
+        state.stats = payload.data.stats
+      })
+      .addCase(getStats.rejected, ( state, { payload }) => {
         state.isLoading = false
       })
   }

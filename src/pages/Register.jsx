@@ -78,7 +78,7 @@ const Register = () => {
             <Button background color='white'>
               {isLoading ? 'loading...' : 'submit'}
             </Button>
-            <Button color='black'>demo app</Button>
+            {/* <Button color='black'>demo app</Button> */}
           </div>
           <p className='self-center'>
             {!values.isMember ? 'Already a member' : 'Not a member yet?'}

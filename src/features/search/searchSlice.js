@@ -19,7 +19,6 @@ const searchSlice = createSlice({
         const { jobs } = payload.data
         state.isLoading = false
         state.jobs = jobs
-        toast.success('Successfull')
       })
       .addCase(getJobs.rejected, (state, { payload }) => {
         state.isLoading = false

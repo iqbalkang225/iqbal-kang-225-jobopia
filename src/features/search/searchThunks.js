@@ -3,9 +3,9 @@ import { postRequest, URL } from "../../utils/urls";
 
 export const getJobs = createAsyncThunk('search/getJobs', async(query, thunkAPI) => {
 
-  const { status, jobType, search } = query
+  const { status, jobType, search, sort } = query
 
-  let requestURL = `${URL}jobs?status=${status}&jobType=${jobType}`
+  let requestURL = `${URL}jobs?status=${status}&jobType=${jobType}&sort=${sort}`
 
   if(search) {
     requestURL = `${requestURL}&search=${search}`

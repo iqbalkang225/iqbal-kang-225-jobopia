@@ -5,35 +5,30 @@ import { FiBell } from 'react-icons/fi'
 import { MdOutlineCancel } from 'react-icons/md'
 
 import { useDispatch, useSelector } from 'react-redux'
-import { getJobs } from '../features/search/searchThunks'
+import { getStats } from '../features/job/jobSlice'
 
 const Dashboard = () => {
     const dispatch = useDispatch()
 
-    const values = {
-        search: '',
-        sort: 'latest',
-        jobType: 'all',
-        status: 'all'
-    }
-
     useEffect(() => {
-        dispatch(getJobs(values))        
+        dispatch(getStats())       
     }, [])
    
 
     const { jobs } = useSelector(store => store.search)
+    const { pending, interview, declined }  = useSelector(store => store.job?.stats)
 
-    const getStatusCount = (jobStatus) => jobs.filter((job) => job.status === jobStatus).length
 
-    const calcPercentage = (jobType) => {
-        const totalJobs = jobs.length
-        return Math.round((jobType / totalJobs) * 100)
-    }
+    // const getStatusCount = (jobStatus) => jobs.filter((job) => job.status === jobStatus).length
 
-    const pending =  getStatusCount('pending')
-    const interview =  getStatusCount('interview')
-    const declined =  getStatusCount('declined')
+    // const calcPercentage = (jobType) => {
+    //     const totalJobs = jobs.length
+    //     return Math.round((jobType / totalJobs) * 100)
+    // }
+
+    // const pending =  getStatusCount('pending')
+    // const interview =  getStatusCount('interview')
+    // const declined =  getStatusCount('declined')
 
 
   return (
