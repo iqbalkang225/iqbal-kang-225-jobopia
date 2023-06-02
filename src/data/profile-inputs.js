@@ -1,6 +1,6 @@
 export const inputs = [
     {
-      text: 'firstName',
+      text: 'name',
       label: 'name',
       type: 'text',
       required: true,
@@ -19,7 +19,7 @@ export const inputs = [
       type: 'email',
       required: true,
       message: 'Please enter a password',
-      disabled: 'true'
+      // disabled: 'true'
     },
     {
       label: 'location',

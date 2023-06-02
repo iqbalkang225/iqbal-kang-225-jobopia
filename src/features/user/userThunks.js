@@ -1,42 +1,49 @@
-import { fetchUserData } from "./userSlice"
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { postRequest } from '../../utils/urls'
 
-import { auth, db } from '../../firebase'
-import { getNotification } from '../../utils/utilFunctions'
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth'
-import { collection, addDoc, doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore'
-import { loadUser } from './userSlice'
-
-
-export const authUser = (user, authType) => {
-    return async (dispatch) => {
-      const { name, email, password } = user
+export const registerUser = createAsyncThunk('user/registerUser', async(user, thunkAPI) => {
   
-      try {
-        const res = await authType(auth, email, password)
-        getNotification('success', 'Welcome')
+  try {
+    const response = await postRequest('user/register', user, null, 'POST')
+    const data = await response.json()
 
-        const { email:userEmail, uid: id } = res.user
-        
-        const userRef = collection(db, 'users')
+    if(!response.ok) throw new Error(data.message)
+    return data
+  } 
+  catch (error) {
+    return thunkAPI.rejectWithValue(error.message)
+  } 
+
+})
+
+export const loginUser = createAsyncThunk('user/loginUser', async(user, thunkAPI) => {
   
-        if(authType === createUserWithEmailAndPassword) {
-            setDoc( doc(userRef, userEmail), { 
-                name, lastName: '', location: '', email: userEmail, id, jobs: [] 
-            })
-        }
+  try {
+    const response = await postRequest('user/login', user, null, 'POST')
+    const data = await response.json()
 
-        onSnapshot(doc(userRef, userEmail), (snapshot) => {
-            dispatch(fetchUserData(snapshot.data()))
-        })
-        console.log('rendered')
+    if(!response.ok) throw new Error(data.message)
+    return data
+  } 
+  catch (error) {
+    return thunkAPI.rejectWithValue(error.message)
+  } 
 
-        onAuthStateChanged(auth, loggedInUser => {
-          dispatch(loadUser(loggedInUser.email))
-        })
-        
-      } catch (err) {
-        console.log(err)
-        getNotification('error', err.message)
-      }
-    }
+})
+
+export const updateUser = createAsyncThunk('user/updateUser', async(user, thunkAPI) => {
+
+  try{
+    const token = thunkAPI.getState().user.user.token
+    const response = await postRequest('user/updateUser', user, token, 'PATCH')
+    const data = await response.json()
+
+    if(!response.ok) throw new Error(data.message)
+    return data
+
   }
+  catch(error) {
+    return thunkAPI.rejectWithValue(error.message)
+  }
+
+})

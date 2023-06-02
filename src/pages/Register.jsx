@@ -4,21 +4,23 @@ import { inputs } from '../data/register-inputs'
 import { useSelector, useDispatch } from 'react-redux'
 import { loadUser } from '../features/user/userSlice'
 import { useNavigate } from 'react-router'
-import { onAuthStateChanged } from 'firebase/auth'
-import { auth } from '../firebase'
-import { authUser } from '../features/user/userThunks'
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
+import { registerUser, loginUser } from '../features/user/userThunks'
 
 
 const Register = () => {
 
   const navigate = useNavigate()
 
-  const initialValues = { name: '', email: '', password: '', isMember: true }
+  // const [focus, setFocus] = useState(false)
+  // const handleFocus = () => setFocus(true)
+
+  const initialValues = { name: '', email: '', password: '', confirmPassword: '', isMember: true }
   const [values, setValues] = useState(initialValues)
 
-  const toggleForm = () => setValues(prevState => (
-    { name: '', email: '', password: '', isMember: !prevState.isMember }))
+  const toggleForm = () => setValues(prevState => {
+   return  { name: '', email: '', password: '', confirmPassword: '', isMember: !prevState.isMember }
+  })
+
 
   const changeHandler = e => {
     const { name, value } = e.target
@@ -28,24 +30,22 @@ const Register = () => {
   const { currentUser } = useSelector(store => store.user)
   const dispatch = useDispatch()
 
-  const { anyUser } = useSelector(store => store.user)
+  const { user, isLoading } = useSelector(store => store.user)
 
   const handleSubmit = e => {
     e.preventDefault()
 
-    const { name, email, password, isMember } = values
-    
-    isMember
-      ? dispatch(authUser({ email, password }, signInWithEmailAndPassword))
-      : dispatch(authUser({ name, email, password }, createUserWithEmailAndPassword))
+    const { name, email, password, confirmPassword, isMember } = values
 
-    if(anyUser) navigate('/')
+    isMember
+      ? dispatch(loginUser({ email, password }))
+      : dispatch(registerUser({ name, email, password, confirmPassword }))
   }
 
-  // onAuthStateChanged(auth, loggedInUser => {
-  //   console.log(loggedInUser)
-  //   if (currentUser.email) navigate('/')
-  // })
+  useEffect(() => {
+    if(user) navigate('/')
+  }, [user])
+
 
   return (
     // outer container
@@ -60,12 +60,15 @@ const Register = () => {
         <form className='flex flex-col gap-5' onSubmit={handleSubmit}>
           {inputs.map((input, index) => {
             if (values.isMember && index === 0) return null
+            if (values.isMember && index === 3) return null
             return (
               <FormRow
                 key={index}
                 direction='col'
                 onChange={changeHandler}
                 value={values[input.label]}
+                // focus={focus}
+                // handleFocus={handleFocus}
                 {...input}
               />
             )
@@ -73,9 +76,9 @@ const Register = () => {
           {/* buttons container */}
           <div className='flex flex-col gap-2'>
             <Button background color='white'>
-              submit
+              {isLoading ? 'loading...' : 'submit'}
             </Button>
-            <Button color='black'>demo app</Button>
+            {/* <Button color='black'>demo app</Button> */}
           </div>
           <p className='self-center'>
             {!values.isMember ? 'Already a member' : 'Not a member yet?'}

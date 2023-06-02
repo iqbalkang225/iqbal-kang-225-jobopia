@@ -1,15 +1,14 @@
 import React, { useState } from 'react'
 
-const FormRow = ({ text, label, type, onChange, value, disabled, direction, required, message, options, color }) => {
-
+const FormRow = ({ text, label, type, onChange,  value, disabled, direction, required, message, options, color }) => {
   const [focus, setFocus] = useState(false)
-  const handleFocus = () => setFocus(true)
+  const handleFocus = () => setFocus(prevState => !prevState)
 
   if(type==='select') {
     return (
       <div className={`flex ${`flex-${direction} ${direction === 'row' && 'gap-6 items-center'}`}`}>
 
-        <label htmlFor={label} className='capitalize mb-1.5'>
+        <label htmlFor={label} className={`capitalize mb-1.5 text-${color}`}>
           {label}
         </label>
 
@@ -43,8 +42,8 @@ const FormRow = ({ text, label, type, onChange, value, disabled, direction, requ
           onChange={onChange}
           value={value}
           required={required}
-          onBlur={handleFocus}
-          disabled = {disabled}
+          onBlur={() => handleFocus()}
+          // disabled = {disabled}
           focused={focus.toString()}
         />
         <span className='text-xs text-red mt-1 error'> {message} </span>
